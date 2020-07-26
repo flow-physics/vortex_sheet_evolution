@@ -1,0 +1,21 @@
+#!/bin/bash
+
+for i in `seq 1 980`;
+do
+name="data${i}"
+t=0.001*${i}
+gnuplot << PLOT_MANY_FILES
+set xlabel "x" 
+set ylabel "y" 
+m="./$name"
+k=${t}
+set terminal pngcairo size 1024,768
+set output "./plots/$name.png"
+set label sprintf("Time = %.4f",k) at graph 0.85, graph 0.9
+set title sprintf("Vortex Sheet Evolution, with dt=0.001")
+set nokey
+set grid
+plot m using 1:2 with dots
+
+PLOT_MANY_FILES
+done
