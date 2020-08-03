@@ -24,7 +24,7 @@
 
     program vortex
     use vortex_data
-    include 'mpif.h'
+    use mpi
     implicit none
     integer :: i,j,k,nt,it,kj,istart,iend,itemp,tag,m
     complex(kind=16) :: tsum
@@ -91,12 +91,16 @@
 
 
 !    write and display initial conditions
-    open(unit=38,file='/gpfs/bglscratch/aserajsh/vortex_second/vortex_init_data',position='append',status='old')
+    open(unit=38,file='vortex_init_data',status='replace')
     do j=1,n
     write(38,300) real(z(j)), aimag(z(j))
     enddo
     close(38)
 300    format (e41.32e3,e41.32e3)
+
+    open(unit=38,file='filter_status',status='replace')
+    write(38,*) 'switching off the filter', k
+    close(38)
 
     endif  ! the master finishes initializing the data
 !-----------------------------------------------------------------------------------------------------------
@@ -218,7 +222,7 @@
     enddo
     if(j .eq. 0) then
         tag=0
-    open(unit=38,file='/gpfs/bglscratch/aserajsh/vortex_second/filter_status',position='append',status='old')
+    open(unit=38,file='filter_status',position='append',status='old')
     write(38,*) 'switching off the filter', k
     close(38)
     endif
@@ -281,7 +285,7 @@
 !    if (mod(k,10) .eq. 0) then 
     
         !    write to file
-        write(tempfile,'(a,i0,a)') "data",k
+        write(tempfile,'(a,i0,a)') "data/data",k
         filename=trim(adjustl(tempfile))
 
         !     file is created in the current working directory
