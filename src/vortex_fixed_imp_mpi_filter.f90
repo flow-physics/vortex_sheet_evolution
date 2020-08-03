@@ -93,10 +93,9 @@
 !    write and display initial conditions
     open(unit=38,file='vortex_init_data',status='replace')
     do j=1,n
-    write(38,300) real(z(j)), aimag(z(j))
+    write(38,"(e41.32e3,e41.32e3)") real(z(j)), aimag(z(j))
     enddo
     close(38)
-300    format (e41.32e3,e41.32e3)
 
     open(unit=38,file='filter_status',status='replace')
     write(38,*) 'switching off the filter', k
@@ -291,7 +290,7 @@
         !     file is created in the current working directory
         open(unit=58,file=filename,status='new')
         do j=1,n
-        write(58,300) real(z(j)),aimag(z(j))
+        write(58,"(e41.32e3,e41.32e3)") real(z(j)),aimag(z(j))
         enddo
         close(58)
 !    endif
